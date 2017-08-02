@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Profile - Neurowake | FPS Game For VR</title>
+    <meta name="keywords" content="Neurowake,VR game,VR shooting game,VR FPS" />
+    <meta name="description" content="Neurowake is a online VR multiplayer First Person Shooter game designed to offer a thrilling FPS game experience." />
+    <link href="src/css/reset1.css" rel="stylesheet"/>
+    <script src="src/js/jquery.min.js"></script>
+    <script src="src/js/profile-pc.js"></script>
+    <script src="src/js/head-share.js"></script>
+    <script src="src/js/profile-browserJudge.js"></script>
+    <script src="src/js/ajax.js"></script>
+    <!--<script src="src/js/wechatland.js"></script>-->
+    <!--<script src="src/js/steamland.js"></script>-->
+    <script src="src/js/steamlandAbroad.js"></script>
+    <!--<script src="src/js/wechat-mobile.js"></script>-->
+    <script src="src/js/steamBtn.js"></script>
+    <script src="http://res.wx.qq.com/connect/zh_CN/htmledition/js/wxLogin.js"></script>
+    <script type="text/javascript">
+        //警告，这一句使页面不报错，非特殊情况不打开，临时使用。
+        // window.onerror=function(){return true;};
+        window.onload=function(){
+            var oDen = document.getElementById('den');
+            var URLlanguage = './src/php/steamauth/CNorEN.php';
+            var oLogout = document.getElementById('logout');
+            var landingWindow = document.getElementById('landing-window');
+            var windowBg = document.getElementById('window-bg');
+            var URLlogout = './src/php/steamauth/steamauth.php?logout';
+//            ajax({
+//                url: URLlanguage,
+//                type: 'POST',
+//                success: function (str) {
+//                    console.log(str);
+//                    if(str=='CN'){
+//                        steamland();
+//                    }else{
+//                        steamlandAbroad();
+//                    }
+////                    var arr = eval('(' + str + ')');  //用eval读json
+////                    console.log(arr);
+//                }
+//            });
+            steamlandAbroad();
+            setTimeout('steamBtn()',3000);
+            if(screen.width>1200){
+                timer=setTimeout(function(){
+                    var ID = sessionStorage.getItem("steamid");
+                    if(!ID){
+                        landingWindow.style.display='block';
+                        windowBg.style.display='block';
+                    }
+                },1200);
+            }
+           // setTimeout('loginAlert()',1000);
+//            oDen.onclick=function(){
+//                showWechat();
+//            };
+//            oLogout.onclick=function(){
+//                sessionStorage.removeItem("weChatUnionId");
+//            };
+            // steamBtn();
+            oLogout.onclick = function () {
+                sessionStorage.removeItem("weChatUnionId");
+                sessionStorage.removeItem("steamid");
+                ajax({
+                    url: URLlogout,
+                    type: 'POST',
+                    success: function (json) {
+                        console.log(json);
+                    }
+                });
+            };
+        };
+    </script>
+    <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-101723204-1', 'auto');
+        ga('send', 'pageview');
+
+    </script>
+</head>
+<body class="clearFix">
+
+<!--头部-->
+<div class="head-f clearFix">
+    <i class="head-logo fl">convict-logo
+        <a href="http://www.playneurowake.com"></a>
+    </i>
+    <!--登陆窗口-->
+    <input type="button" class="den" id="den">
+    <!--<input type="button" class="exit" id="exit">-->
+    <a href="profile.html" class="logout" id="logout"></a>
+    <!--<a href="#"></a>-->
+    <div class="landing-window clearFix" id="landing-window">
+        <div class="landing-x" id="landing-x"></div>
+        <i>LOGIN WITH YOUR STEAM ACCOUNT</i>
+        <!--<p>USE WECHAT LOGIN</p>-->
+        <!--登陆微信的二维码刷新位置-->
+        <span id="login_container"></span>
+        <!--<img src="src/image/erweima.png" alt=""/>-->
+        <div class="landing-window-foot clearFix">
+            <div id="steambtn"></div>
+            <!--这是推出按钮，记得待会儿放到外面去-->
+            <!--<a href="profile-pc.html" id="logout">logout</a>-->
+        </div>
+    </div>
+    <div class="window-bg" id="window-bg"></div>
+    <!--<input type="button" class="fen" id="fen">-->
+    <!--<a href="#"></a>-->
+    <div class="share-window clearFix" id="share-window">
+        <p>SHARE TO SOCIAL MEDIA</p>
+        <div class="share-x" id="share-x"></div>
+        <ul class="share-ul clearFix">
+            <li class="share-ul-li1"></li>
+            <li class="share-ul-li2"></li>
+            <li class="share-ul-li3"></li>
+            <li class="share-ul-li4"></li>
+            <li class="share-ul-li5"></li>
+            <li class="share-ul-li6"></li>
+            <li class="share-ul-li7"></li>
+            <li class="share-ul-li8"></li>
+        </ul>
+    </div>
+    <!--登陆与分享窗口完-->
+
+    <div class="nav-mobile-btn"></div>
+
+    <div class="nav clearFix fr" id="nav">
+        <!--最好整段复制-->
+        <div class="nav-mobile-x"></div>
+        <span class="nav-s nav-head clearFix" id="nav-s-1"><a href="game.html">THE GAME</a>
+            <!--<i class="nav-si nav-si-1"></i>-->
+            <!--<a class="nav-a nav-a-1" >Game Tips</a>-->
+            <!--<a class="nav-a nav-a-1">Versions</a>-->
+            <!--<a href="TheGame_Page.html" class="nav-a nav-a1 nav-a-1">Game Play</a>-->
+        </span>
+
+         <span class="nav-s">
+            <a href="heros.html">HEROES</a>
+        </span>
+        <span class="nav-s">
+            <a href="Story/index.html">UNIVERSE</a>
+        </span>
+        <span class="nav-s">
+            <a href="media.html">MEDIA</a>
+        </span>
+        <span class="nav-s nav-head clearFix" id="nav-s-2"><a href="javascript:;">LEADERBOARD</a>
+            <i class="nav-si nav-si-2"></i>
+            <a class="nav-a nav-a-2 a-2" href="Ranking.html">Ranking</a>
+            <a class="nav-a nav-a-2 a-2 a-profile" href="profile.html">Profile</a>
+
+            <!--<a class="nav-a nav-a-2 a-2">All-Time</a>-->
+            <!--<a href="Ranking_advance.html" class="nav-a nav-a1 nav-a-2 a-2">My-Ranking</a>-->
+        </span>
+        <span class="nav-s1 nav-head" id="nav-s-3"><a href="news/index.html">NEWS</a>
+            <!--<i class="nav-si nav-si-3"></i>-->
+            <!--<a href="#" class="nav-a nav-a-3 a-3">English</a>-->
+            <!--<a href="#" class="nav-a nav-a-3 a-3">Chinese</a>-->
+        </span>
+        <span class="nav-r">
+            <a rel="nofollow" target="_blank"  href="http://store.steampowered.com/app/617750/Neurowake/">BUY NOW</a>
+        </span>
+        <!--<span class="nav-s">-->
+        <!--<a href="#">COMMUNITY</a>-->
+        <!--</span>-->
+
+    </div>
+</div>
+
+<!--主干-->
+<div class="profile-pc-body1 clearFix">
+    <div class="body1-s1 clearFix">
+        <b id="head-img" class="clearFix"></b>
+        <span id="body-s1-1" class="body-s1-1">NAME</span>
+        <span class="body-s1-2">LEVEL:1</span>
+        <span class="body-s1-3">EXPERIENCE:0</span>
+        <span class="body-s1-4 clearFix">
+            <i id="experience"></i>
+        </span>
+    </div>
+    <div class="body1-s2 clearFix">
+        <span class="body-s2-1">FAVORITE HERO</span>
+        <span class="body-s2-2">CHASEL</span>
+        <span class="body-s2-3">0 TIME</span>
+    </div>
+</div>
+<div class="my-profile">
+    <div class="my-head">MY PROFILE</div>
+    <ul class="my-body clearFix">
+        <li class="my-body-li1">
+            <span id="totalrank">TOTAL RANK</span>
+            <div id="totalno"></div>
+        </li>
+        <li class="my-body-li2">
+            <span class="body-li-span2">STORE RANK</span>
+            <div class="body-li-div2">
+                <!--<i>NONEDATA</i>-->
+            </div>
+        </li>
+        <li class="my-body-li3">
+            <span class="body-li-span3">FRIEND RANK</span>
+            <div class="body-li-div3">
+                <!--<i>NONEDATA</i>-->
+            </div>
+        </li>
+        <li class="my-body-li4">
+            <span>TOTAL PLAY TIME</span>
+            <div></div>
+        </li>
+        <li class="my-body-li5">
+            <span>KILLED-AVERAGE</span>
+            <div></div>
+        </li>
+        <li class="my-body-li6">
+            <span>DAMAGE-AVERAGE</span>
+            <div></div>
+        </li>
+        <li class="my-body-li7">
+            <span>DEATHS-AVERAGE</span>
+            <div></div>
+        </li>
+        <li class="my-body-li8">
+            <span>TOTAL WIN</span>
+            <div></div>
+        </li>
+    </ul>
+</div>
+<div class="hero-profile">
+    <div class="hero-head">HERO PROFILE</div>
+    <ul class="hero-body">
+        <li class="hero-li1">
+            <div>SIEV</div>
+            <span class="hero-li-span1"></span>
+            <span>TIME PLAYED</span>
+            <b>0 minutes</b>
+            <span>GAMES WON</span>
+            <b>0 times</b>
+            <span>WEAPON ACCURACY</span>
+            <b>0 %</b>
+        </li>
+        <li class="hero-li2">
+            <div>CHASEL</div>
+            <span class="hero-li-span1"></span>
+            <span>TIME PLAYED</span>
+            <b>0 minutes</b>
+            <span>GAMES WON</span>
+            <b>0 times</b>
+            <span>WEAPON ACCURACY</span>
+            <b>0 %</b>
+        </li>
+        <li class="hero-li3">
+            <div>GHOST</div>
+            <span class="hero-li-span1"></span>
+            <span>TIME PLAYED</span>
+            <b>0 minutes</b>
+            <span>GAMES WON</span>
+            <b>0 times</b>
+            <span>WEAPON ACCURACY</span>
+            <b>0 %</b>
+        </li>
+        <li class="hero-li4">
+            <div>AVA</div>
+            <span class="hero-li-span1"></span>
+            <span>TIME PLAYED</span>
+            <b>0 minutes</b>
+            <span>GAMES WON</span>
+            <b>0 times</b>
+            <span>WEAPON ACCURACY</span>
+            <b>0 %</b>
+        </li>
+        <li class="hero-li5">
+            <div>MAMUT</div>
+            <span class="hero-li-span1"></span>
+            <span>TIME PLAYED</span>
+            <b>0 minutes</b>
+            <span>GAMES WON</span>
+            <b>0 times</b>
+            <span>WEAPON ACCURACY</span>
+            <b>0 %</b>
+        </li>
+    </ul>
+    <div class="share-foot">
+        <ul class="share-foot-ul clearFix">
+            <li class="share-li5"><a rel="nofollow" target="_blank"  href="https://www.facebook.com/"></a></li>
+            <li class="share-li4"><a rel="nofollow" target="_blank"  href="http://www.twitter.com/"></a></li>
+            <li class="share-li3"><a rel="nofollow" target="_blank"  href="https://www.gmail.com/"></a></li>
+            <li class="share-li2"><a rel="nofollow" target="_blank"  href="http://www.tumblr.com/"></a></li>
+            <li class="share-li1">SHARE</li>
+        </ul>
+    </div>
+</div>
+
+
+<!--脚部-->
+<div class="media-foot">
+    <div class="media-foot1">
+        <p>$19.9</p>
+        <a rel="nofollow" target="_blank"  href="http://store.steampowered.com/app/617750/Neurowake/" class="buy-now" onClick="_gaq.push(['_trackEvent', 'foot-steam', 'click'])">
+            ON STEAM
+        </a>
+    </div>
+    <div class="media-foot2">
+        <div class="foot-tx1 foot-tx-left">
+            <p class="tx1-p1">NEUROWAKE</p>
+            <p><a href="game.html">The game</a></p>
+            <p><a href="heros.html">Herose</a></p>
+            <p><a href="Story/index.html">Universe</a></p>
+            <p><a href="media.html">Media</a></p>
+            <p><a href="Ranking.html">Leaderboard</a></p>
+            <p><a href="news/index.html">News</a></p>
+            <p><a rel="nofollow"  target="_blank" href="http://store.steampowered.com/app/617750/Neurowake/">Buy now</a></p>
+        </div>
+        <div class="foot-tx1">
+            <p class="tx1-p1">UNIVERSE</p>
+            <p><a href="./Story/orpheum_city.html">Orpheum City</a></p>
+            <p><a href="./Story/the_awakening_event.html">The Awakening</a></p>
+            <p><a href="./Story/the_united_world_commission.html">The UWC</a></p>
+            <p><a href="./Story/the_resistance.html">The Resistance</a></p>
+            <p><a href="./Story/promise_keeper.html">The Promise Keeper</a></p>
+        </div>
+        <!--<div class="foot-tx1">-->
+        <!--<p class="tx1-p1">LEADERBOARD</p>-->
+        <!--<p><a href="">Weekly Ranking</a></p>-->
+        <!--<p><a href="">Monthly Ranking</a></p>-->
+        <!--<p><a href="">All-Time Ranking</a></p>-->
+        <!--<p><a href="">Game Stats</a></p>-->
+        <!--</div>-->
+        <div class="foot-tx1">
+            <p class="tx1-p1">COMMUNITY</p>
+            <p><a rel="nofollow" target="_blank" href="https://www.reddit.com/r/Neurowake/">Reddit</a></p>
+            <p><a rel="nofollow" target="_blank"  href="https://www.facebook.com/NeurowakeVR/">Facebook</a></p>
+            <p><a rel="nofollow" target="_blank"  href="https://www.youtube.com/channel/UCbvWh_twRhTR2rmAx8nQj4w">Youtube</a></p>
+            <p><a rel="nofollow" target="_blank" href="https://twitter.com/ShortfuseStudio">Twitter</a></p>
+        </div>
+        <div class="foot-tx2">
+            <!--<p class="tx2-p1">合作热线: <span> 400-918-0228</span></p>-->
+            <p class="tx2-p1">E-mail / <span> neurowake@shortfuse.cn</span></p>
+            <p class="clearFix tx2-p2">
+                <a rel="nofollow" target="_blank"  href="https://twitter.com/NeurowakeGame">
+                    <img src="src/image/twitter-logo.png" alt="">
+                </a>
+                <a rel="nofollow" target="_blank"  href="https://www.facebook.com/NeurowakeVR/">
+                    <img src="src/image/Facebook-logo.png" alt="">
+                </a>
+                <a rel="nofollow" target="_blank"  href="https://www.youtube.com/channel/UCR5iTF7zojwVkoV68u-kptg?view_as=subscriber">
+                    <img src="src/image/youtube-logo.png" alt="">
+                </a>
+                <!--<a href="#">-->
+                <!--<img src="src/image/weibo-logo.png" alt="">-->
+                <!--</a>-->
+                <!--<a href="#">-->
+                <!--<img src="src/image/wechat-logo.png" alt="">-->
+                <!--</a>-->
+                <!--<a href="#">-->
+                <!--<img src="src/image/youku-logo.png" alt="">-->
+                <!--</a>-->
+            </p>
+            <div class="tx2-div1">闽ICP备17011184号-2</div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
